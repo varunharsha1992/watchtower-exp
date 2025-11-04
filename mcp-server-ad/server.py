@@ -284,10 +284,7 @@ def detect_anomalies(
     time_column: str,
     aggregation_level: Optional[str] = None,
     value_column: Optional[str] = None,
-    methods: List[str] = ["moving_average", "standard_deviation"],
-    window: int = 7,
-    threshold: float = 2.0,
-    iqr_multiplier: float = 1.5
+    methods: List[str] = ["moving_average", "standard_deviation"]
 ) -> Dict[str, Any]:
     """
     MCP tool wrapper for anomaly detection.
@@ -301,9 +298,6 @@ def detect_anomalies(
         value_column: Column name containing values to analyze for anomalies.
                       If None, will try to auto-detect numeric columns
         methods: List of methods to use: "moving_average", "standard_deviation", "iqr"
-        window: Window size for moving average method (default: 7)
-        threshold: Threshold for moving_average and standard_deviation methods (default: 2.0)
-        iqr_multiplier: IQR multiplier for IQR method (default: 1.5)
     
     Returns:
         Dictionary containing detected anomalies with all methods applied
@@ -314,10 +308,7 @@ def detect_anomalies(
         time_column=time_column,
         aggregation_level=aggregation_level,
         value_column=value_column,
-        methods=methods,
-        window=window,
-        threshold=threshold,
-        iqr_multiplier=iqr_multiplier
+        methods=methods
     )
 
 
