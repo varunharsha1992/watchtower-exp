@@ -134,7 +134,7 @@ def detect_anomalies_iqr(
 
 
 def detect_anomalies_core(
-    data: Union[str, Dict, List],
+    data: str,
     time_column: str,
     aggregation_level: Optional[str] = None,
     value_column: Optional[str] = None,
@@ -148,7 +148,7 @@ def detect_anomalies_core(
     This function can be called directly for testing.
     
     Args:
-        data: JSON string, dict, or list containing time series data
+        data: string containing time series data [comma separated values]
         time_column: Name of the column containing time/datetime values
         aggregation_level: Optional aggregation level (e.g., "product_id", "category")
                           If provided, aggregates data at this level before detection
@@ -164,25 +164,8 @@ def detect_anomalies_core(
     """
     try:
         # Parse JSON data
-        if isinstance(data, str):
-            data_dict = json.loads(data)
-        else:
-            data_dict = data
-        
-        # Convert to DataFrame
-        if isinstance(data_dict, list):
-            df = pd.DataFrame(data_dict)
-        elif isinstance(data_dict, dict):
-            # Try to extract list from dict
-            if 'data' in data_dict:
-                df = pd.DataFrame(data_dict['data'])
-            elif 'records' in data_dict:
-                df = pd.DataFrame(data_dict['records'])
-            else:
-                # Try to create DataFrame from dict values
-                df = pd.DataFrame([data_dict])
-        else:
-            return {"error": "Invalid data format. Expected JSON object or array."}
+        data_dict = [float(x) for x in data.split(',')]
+        df = pd.DataFrame(data_dict)
         
         # Convert time column to datetime if needed
         if time_column in df.columns:
@@ -311,7 +294,7 @@ def detect_anomalies(
     Detect anomalies in time series data using statistical methods.
     
     Args:
-        data: JSON string containing time series data
+        data: string containing time series data [comma separated values]
         time_column: Name of the column containing time/datetime values
         aggregation_level: Optional aggregation level (e.g., "product_id", "category")
                           If provided, aggregates data at this level before detection
